@@ -52,7 +52,7 @@ BOOLEAN_ATTRIBUTES = {
   'form': ('novalidate',),
   'iframe': ('seamless',),
   'img': ('ismap',),
-  'input': ('autofocus', 'checked', 'disabled', 'formnovalidate', 'multiple', 
+  'input': ('autofocus', 'checked', 'disabled', 'formnovalidate', 'multiple',
             'readonly', 'required',),
   'keygen': ('autofocus', 'disabled',),
   'object': ('typesmustmatch',),
@@ -120,13 +120,13 @@ class HTMLMinParser(HTMLParser):
         elif not any((c in v for c in ('"', "'", ' ', '<', '>'))):
           result += '={}'.format(escape(v, quote=True))
         else:
-          result += '="{}"'.format(escape(v, quote=True).replace('&#x27;', "'"))
+          result += "='{}'".format(escape(v, quote=True).replace('&#x27;', "'"))
     if close_tag:
       return result + '/>'
     return result + '>'
 
   def handle_decl(self, decl):
-    if (len(self._data_buffer) == 1 and 
+    if (len(self._data_buffer) == 1 and
         whitespace_re.match(self._data_buffer[0])):
       self._data_buffer = []
     self._data_buffer.append('<!' + decl + '>\n')
@@ -240,7 +240,7 @@ class HTMLMinParser(HTMLParser):
     if self._in_pre_tag > 0:
       self._data_buffer.append(data)
     else:
-      # remove_all_empty_space matches everything. remove_empty_space only 
+      # remove_all_empty_space matches everything. remove_empty_space only
       # matches if there's a newline involved.
       if self.remove_all_empty_space or self._in_head or self._after_doctype:
         match = whitespace_re.match(data)
@@ -250,7 +250,7 @@ class HTMLMinParser(HTMLParser):
         match = whitespace_newline_re.match(data)
         if match and match.end(0) == len(data):
           return
-        
+
 
       # if we're in the title, remove leading and trailing whitespace
       if self._tag_stack and self._tag_stack[0][0] == 'title':
